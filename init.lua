@@ -1,3 +1,8 @@
+-- forked from https://github.com/nvim-lua/kickstart.nvim
+
+-- TODO
+-- system clipboard copy config (unnamedplus?) 
+
 -- Install packer
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 local is_bootstrap = false
@@ -6,6 +11,10 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
   vim.cmd [[packadd packer.nvim]]
 end
+
+-- disable netrw at the very start of your init.lua (strongly advised)
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 require('packer').startup(function(use)
   -- Package manager
@@ -23,10 +32,22 @@ require('packer').startup(function(use)
     },
   }
 
+  use { -- file finder
+    'nvim-tree/nvim-tree.lua',
+    requires = {
+      'nvim-tree/nvim-web-devicons', -- optional, for file icons
+  },
+    tag = 'nightly' -- optional, updated every week. (see issue #1193)
+  }
+
   use { -- Autocompletion
     'hrsh7th/nvim-cmp',
     requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   }
+
+  use 'hrsh7th/cmp-path'
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/cmp-emoji'
 
   use { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
@@ -91,7 +112,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 -- See `:help vim.o`
 
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 
 -- Make line numbers default
 vim.wo.number = true
@@ -121,11 +142,29 @@ vim.cmd [[colorscheme onedark]]
 vim.o.completeopt = 'menuone,noselect'
 
 -- [[ Basic Keymaps ]]
--- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.g.mapleader = '\\'
+vim.g.maplocalleader = '\\'
+
+-- who ahs time to hit esc
+vim.keymap.set('i', 'jj', "<esc>l", { silent = true })
+
+-- Copy pasting / file keymaps
+vim.keymap.set('n', '<C-s>', '<cmd> w <CR>', { silent = true })
+vim.keymap.set('i', '<C-s>', '<esc>l <cmd> w <CR>', { silent = true })
+vim.keymap.set('n', '<C-c>', '<cmd> %y+ <CR>', { silent = true })
+
+-- buffer keymaps
+vim.keymap.set('n', '<leader>b', '<cmd> enew <CR>', { silent = true })
+vim.keymap.set('n', '<TAB>', '<cmd> bnext <CR>', { silent = true })
+vim.keymap.set('n', '<S-TAB>', '<cmd> bprev <CR>', { silent = true })
+
+-- Window keymaps
+vim.keymap.set('n', '<C-h>', '<C-w>h', {silent = true })
+vim.keymap.set('n', '<C-l>', '<C-w>l', {silent = true })
+vim.keymap.set('n', '<C-j>', '<C-w>j', {silent = true })
+vim.keymap.set('n', '<C-k>', '<C-w>k', {silent = true })
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
@@ -179,6 +218,18 @@ require('gitsigns').setup {
   },
 }
 
+-- nvim tree
+require("nvim-tree").setup({
+  update_cwd = true,
+  update_focused_file = {
+    enable = true,
+    update_cwd = false,
+    ignore_list = {},
+  },
+})
+vim.keymap.set('n', '<C-n>', '<cmd> NvimTreeToggle <CR>', { silent = true })
+
+
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
@@ -206,11 +257,12 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer]' })
 
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[F]ind [F]iles' })
+vim.keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, { desc = '[F]ind [H]elp' })
+vim.keymap.set('n', '<leader>fw', require('telescope.builtin').grep_string, { desc = '[F]ind current [W]ord' })
+vim.keymap.set('n', '<leader>fg', require('telescope.builtin').live_grep, { desc = '[F]ind by [G]rep' })
+vim.keymap.set('n', '<leader>fd', require('telescope.builtin').diagnostics, { desc = '[F]ind [D]iagnostics' })
+vim.keymap.set('n', '<leader>fk', require('telescope.builtin').keymaps, { desc = '[F]ind [K]eymaps' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -333,7 +385,7 @@ require('mason').setup()
 
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
-local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver', 'sumneko_lua', 'gopls' }
+local servers = { 'clangd', 'sumneko_lua', 'marksman' }
 
 -- Ensure the servers above are installed
 require('mason-lspconfig').setup {
@@ -382,6 +434,8 @@ require('lspconfig').sumneko_lua.setup {
   },
 }
 
+require('lspconfig').marksman.setup({})
+
 -- nvim-cmp setup
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
@@ -422,6 +476,9 @@ cmp.setup {
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
+    { name = 'buffer' },
+    { name = 'path' },
+    { name = 'emoji' },
   },
 }
 
