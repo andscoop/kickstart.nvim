@@ -1,8 +1,5 @@
 -- forked from https://github.com/nvim-lua/kickstart.nvim
 
--- TODO
--- system clipboard copy config (unnamedplus?) 
-
 -- Install packer
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 local is_bootstrap = false
@@ -385,7 +382,7 @@ require('mason').setup()
 
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
-local servers = { 'clangd', 'sumneko_lua', 'marksman' }
+local servers = { 'clangd', 'sumneko_lua', 'marksman', 'pyright', 'bashls', 'jsonls'}
 
 -- Ensure the servers above are installed
 require('mason-lspconfig').setup {
