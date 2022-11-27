@@ -1,6 +1,6 @@
 -- forked from https://github.com/nvim-lua/kickstart.nvim
 
--- Install packer
+-- Bootstrap `packer`, package manager 
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 local is_bootstrap = false
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
@@ -9,12 +9,14 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.cmd [[packadd packer.nvim]]
 end
 
--- disable netrw at the very start of your init.lua (strongly advised)
+-- disable `netrw`, the built-in file browser, at the very start of your init.lua (strongly advised)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+--[[ -----------
+Install Plugins
+--]]
 require('packer').startup(function(use)
-  -- Package manager
   use 'wbthomason/packer.nvim'
 
   use { -- LSP Configuration & Plugins
@@ -41,7 +43,7 @@ require('packer').startup(function(use)
     'hrsh7th/nvim-cmp',
     requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   }
-
+  -- Additional cmp autocompletion plugins
   use 'hrsh7th/cmp-path'
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-emoji'
@@ -181,6 +183,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+
+--[[ -------------
+-- Require and Configure Plugins
+--]]
 
 -- Set lualine as statusline
 -- See `:help lualine.txt`
