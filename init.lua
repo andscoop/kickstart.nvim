@@ -158,6 +158,7 @@ vim.keymap.set('n', '<C-c>', '<cmd> %y+ <CR>', { silent = true })
 vim.keymap.set('n', '<leader>b', '<cmd> enew <CR>', { silent = true })
 vim.keymap.set('n', '<TAB>', '<cmd> bnext <CR>', { silent = true })
 vim.keymap.set('n', '<S-TAB>', '<cmd> bprev <CR>', { silent = true })
+vim.keymap.set('n', '<leader>x', '<cmd>:bd <CR>', { silent = true })
 
 -- Window keymaps
 vim.keymap.set('n', '<C-h>', '<C-w>h', {silent = true })
