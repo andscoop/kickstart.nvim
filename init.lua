@@ -146,7 +146,7 @@ vim.o.completeopt = 'menuone,noselect'
 vim.g.mapleader = '\\'
 vim.g.maplocalleader = '\\'
 
--- who ahs time to hit esc
+-- who has time to hit esc
 vim.keymap.set('i', 'jj', "<esc>l", { silent = true })
 
 -- Copy pasting / file keymaps
