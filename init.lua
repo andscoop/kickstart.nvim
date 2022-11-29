@@ -242,11 +242,13 @@ require('telescope').setup {
     mappings = {
       i = {
         ['<C-x>']   = require('telescope.actions').delete_buffer,
+        ['<C-h>']   = require('telescope.actions').select_horizontal, -- change so it doesn't conflict with `<c-x>`
         ['<C-u>'] = false,
         ['<C-d>'] = false,
       },
       n = {
         ['<C-x>']   = require('telescope.actions').delete_buffer,
+        ['<C-h>']   = require('telescope.actions').select_horizontal, -- change so it doesn't conflict with `<c-x>`
       },
     },
   },
