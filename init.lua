@@ -155,10 +155,10 @@ vim.keymap.set('i', '<C-s>', '<esc>l <cmd> w <CR>', { silent = true })
 vim.keymap.set('n', '<C-c>', '<cmd> %y+ <CR>', { silent = true })
 
 -- buffer keymaps
-vim.keymap.set('n', '<leader>b', '<cmd> enew <CR>', { silent = true })
 vim.keymap.set('n', '<TAB>', '<cmd> bnext <CR>', { silent = true })
 vim.keymap.set('n', '<S-TAB>', '<cmd> bprev <CR>', { silent = true })
-vim.keymap.set('n', '<leader>x', '<cmd>:bd <CR>', { silent = true })
+vim.keymap.set('n', '<C-b>', '<cmd> enew <CR>', { silent = true })
+vim.keymap.set('n', '<C-x>', '<cmd>:bd <CR>', { silent = true })
 
 -- Window keymaps
 vim.keymap.set('n', '<C-h>', '<C-w>h', {silent = true })
@@ -241,8 +241,12 @@ require('telescope').setup {
   defaults = {
     mappings = {
       i = {
+        ['<C-x>']   = require('telescope.actions').delete_buffer,
         ['<C-u>'] = false,
         ['<C-d>'] = false,
+      },
+      n = {
+        ['<C-x>']   = require('telescope.actions').delete_buffer,
       },
     },
   },
@@ -269,6 +273,8 @@ vim.keymap.set('n', '<leader>fg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>fd', require('telescope.builtin').diagnostics, { desc = '[F]ind [D]iagnostics' })
 vim.keymap.set('n', '<leader>fk', require('telescope.builtin').keymaps, { desc = '[F]ind [K]eymaps' })
 vim.keymap.set('n', '<leader>fr', require('telescope.builtin').registers, { desc = '[F]ind [R]egisters' })
+vim.keymap.set('n', '<leader>fb', require('telescope.builtin').buffers, { desc = '[F]ind [B]uffers' })
+
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
