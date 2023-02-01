@@ -241,35 +241,32 @@ require('telescope').setup {
   defaults = {
     mappings = {
       i = {
-        ['<C-x>']   = require('telescope.actions').delete_buffer,
-        ['<C-h>']   = require('telescope.actions').select_horizontal, -- change so it doesn't conflict with `<c-x>`
+        ['<C-x>'] = require('telescope.actions').delete_buffer,
+        ['<C-h>'] = require('telescope.actions').select_horizontal, -- change so it doesn't conflict with `<c-x>`
         ['<C-u>'] = false,
         ['<C-d>'] = false,
       },
       n = {
-        ['<C-x>']   = require('telescope.actions').delete_buffer,
-        ['<C-h>']   = require('telescope.actions').select_horizontal, -- change so it doesn't conflict with `<c-x>`
+        ['<C-x>'] = require('telescope.actions').delete_buffer,
+        ['<C-h>'] = require('telescope.actions').select_horizontal, -- change so it doesn't conflict with `<c-x>`
       },
+    },
+  },
+  pickers = {
+    find_files = {
+      --Show hidden files except for .git dir
+      find_command = {'rg', '--files', '--hidden', '-g', '!.git'},
     },
   },
 }
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
-
--- See `:help telescope.builtin`
--- vim.keymap.set('n', '<leader>/', function()
---   -- You can pass additional configuration to telescope to change theme, layout, etc.
---   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
---     winblend = 10,
---     previewer = false,
---   })
--- end, { desc = '[/] Fuzzily search in current buffer]' })
+pcall(require("telescope").load_extension "file_browser")
 
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader>/', require('telescope.builtin').current_buffer_fuzzy_find, { desc = 'Find in current buffer/file' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find buffers' })
-
 vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[F]ind [F]iles' })
 vim.keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, { desc = '[F]ind [H]elp' })
 vim.keymap.set('n', '<leader>fw', require('telescope.builtin').grep_string, { desc = '[F]ind current [W]ord' })
