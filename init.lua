@@ -463,7 +463,9 @@ cmp.setup {
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
+      -- CONFIG-OPT: set to true to auto-select first result
+      -- I found this behavior since <CR> to newline would overwrite last word in line
+      select = false,
     },
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
