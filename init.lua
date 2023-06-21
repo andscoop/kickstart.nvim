@@ -1,6 +1,6 @@
 -- forked from https://github.com/nvim-lua/kickstart.nvim
 
--- Bootstrap `packer`, package manager 
+-- Bootstrap `packer`, package manager
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 local is_bootstrap = false
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
@@ -31,6 +31,14 @@ require('packer').startup(function(use)
     },
   }
 
+  use({
+    "jose-elias-alvarez/null-ls.nvim",
+    config = function()
+      require("null-ls").setup()
+    end,
+    requires = { "nvim-lua/plenary.nvim" },
+  })
+
   use {
     "luukvbaal/nnn.nvim",
   }
@@ -39,8 +47,8 @@ require('packer').startup(function(use)
     'nvim-tree/nvim-tree.lua',
     requires = {
       'nvim-tree/nvim-web-devicons', -- optional, for file icons
-  },
-    tag = 'nightly' -- optional, updated every week. (see issue #1193)
+    },
+    tag = 'nightly'                  -- optional, updated every week. (see issue #1193)
   }
 
   use { -- Autocompletion
@@ -70,10 +78,10 @@ require('packer').startup(function(use)
   use 'lewis6991/gitsigns.nvim'
 
   use 'morhetz/gruvbox'
-  use 'nvim-lualine/lualine.nvim' -- Fancier statusline
+  use 'nvim-lualine/lualine.nvim'           -- Fancier statusline
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
-  use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
-  use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
+  use 'numToStr/Comment.nvim'               -- "gc" to comment visual regions/lines
+  use 'tpope/vim-sleuth'                    -- Detect tabstop and shiftwidth automatically
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
@@ -84,7 +92,7 @@ require('packer').startup(function(use)
   -- EXPERIMENTAL: floa term to enable lazygit from inside nvim
   use 'voldikss/vim-floaterm'
   use 'kdheepak/lazygit.nvim'
-  
+
   -- Add custom plugins to packer from /nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, "custom.plugins")
   if has_plugins then plugins(use) end
@@ -169,10 +177,10 @@ vim.keymap.set('n', '<C-b>', '<cmd> enew <CR>', { silent = true })
 vim.keymap.set('n', '<C-x>', '<cmd>:bd <CR>', { silent = true })
 
 -- Window keymaps
-vim.keymap.set('n', '<C-h>', '<C-w>h', {silent = true })
-vim.keymap.set('n', '<C-l>', '<C-w>l', {silent = true })
-vim.keymap.set('n', '<C-j>', '<C-w>j', {silent = true })
-vim.keymap.set('n', '<C-k>', '<C-w>k', {silent = true })
+vim.keymap.set('n', '<C-h>', '<C-w>h', { silent = true })
+vim.keymap.set('n', '<C-l>', '<C-w>l', { silent = true })
+vim.keymap.set('n', '<C-j>', '<C-w>j', { silent = true })
+vim.keymap.set('n', '<C-k>', '<C-w>k', { silent = true })
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
@@ -207,7 +215,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 require('lualine').setup {
   options = {
     icons_enabled = false,
-    theme = 'onedark',
+    theme = 'gruvbox',
     component_separators = '|',
     section_separators = '',
   },
@@ -238,7 +246,7 @@ require('gitsigns').setup {
 --nnn
 require("nnn").setup({
   auto_open = {
-    empty = true,     -- only auto open on empty buffer
+    empty = true, -- only auto open on empty buffer
   }
 })
 
@@ -274,7 +282,7 @@ require('telescope').setup {
   pickers = {
     find_files = {
       --Show hidden files except for .git dir
-      find_command = {'rg', '--files', '--hidden', '-g', '!.git'},
+      find_command = { 'rg', '--files', '--hidden', '-g', '!.git' },
     },
   },
 }
@@ -283,7 +291,8 @@ require('telescope').setup {
 pcall(require('telescope').load_extension, 'fzf')
 
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader>/', require('telescope.builtin').current_buffer_fuzzy_find, { desc = 'Find in current buffer/file' })
+vim.keymap.set('n', '<leader>/', require('telescope.builtin').current_buffer_fuzzy_find,
+  { desc = 'Find in current buffer/file' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find buffers' })
 vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[F]ind [F]iles' })
 vim.keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, { desc = '[F]ind [H]elp' })
@@ -402,9 +411,9 @@ local on_attach = function(_, bufnr)
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     if vim.lsp.buf.format then
-      vim.lsp.buf.format()
+      vim.lsp.buf.format({ timeout = 2000 })
     elseif vim.lsp.buf.formatting then
-      vim.lsp.buf.formatting()
+      vim.lsp.buf.formatting({ timeout = 2000 })
     end
   end, { desc = 'Format current buffer with LSP' })
 end
@@ -414,7 +423,7 @@ require('mason').setup()
 
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
-local servers = { 'clangd', 'lua_ls', 'marksman', 'pyright', 'bashls', 'jsonls'}
+local servers = { 'clangd', 'lua_ls', 'marksman', 'pyright', 'bashls', 'jsonls' }
 
 -- Ensure the servers above are installed
 require('mason-lspconfig').setup {
@@ -431,6 +440,21 @@ for _, lsp in ipairs(servers) do
     capabilities = capabilities,
   }
 end
+
+local null_ls = require("null-ls")
+
+null_ls.setup({
+  sources = {
+    null_ls.builtins.diagnostics.flake8,
+    null_ls.builtins.diagnostics.ruff,
+    null_ls.builtins.diagnostics.eslint,
+    null_ls.builtins.formatting.black,
+    null_ls.builtins.formatting.stylua,
+    null_ls.builtins.code_actions.shellcheck,
+    null_ls.builtins.code_actions.gitsigns,
+    null_ls.builtins.completion.spell,
+  },
+})
 
 -- Turn on status information
 require('fidget').setup()
