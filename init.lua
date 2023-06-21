@@ -31,6 +31,10 @@ require('packer').startup(function(use)
     },
   }
 
+  use {
+    "luukvbaal/nnn.nvim",
+  }
+
   use { -- file finder
     'nvim-tree/nvim-tree.lua',
     requires = {
@@ -223,6 +227,13 @@ require('gitsigns').setup {
   },
 }
 
+--nnn
+require("nnn").setup({
+  auto_open = {
+    empty = true,     -- only auto open on empty buffer
+  }
+})
+
 -- nvim tree
 require("nvim-tree").setup({
   update_cwd = true,
@@ -262,7 +273,6 @@ require('telescope').setup {
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
-pcall(require("telescope").load_extension "file_browser")
 
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader>/', require('telescope.builtin').current_buffer_fuzzy_find, { desc = 'Find in current buffer/file' })
@@ -396,7 +406,7 @@ require('mason').setup()
 
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
-local servers = { 'clangd', 'sumneko_lua', 'marksman', 'pyright', 'bashls', 'jsonls'}
+local servers = { 'clangd', 'lua_ls', 'marksman', 'pyright', 'bashls', 'jsonls'}
 
 -- Ensure the servers above are installed
 require('mason-lspconfig').setup {
@@ -424,7 +434,7 @@ local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init.lua')
 
-require('lspconfig').sumneko_lua.setup {
+require('lspconfig').lua_ls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
