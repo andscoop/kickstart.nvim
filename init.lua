@@ -1,6 +1,6 @@
 -- forked from https://github.com/nvim-lua/kickstart.nvim
 
--- Bootstrap `packer`, package manager
+-- Bootstrap `packer`, package manager 
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 local is_bootstrap = false
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
@@ -35,8 +35,8 @@ require('packer').startup(function(use)
     'nvim-tree/nvim-tree.lua',
     requires = {
       'nvim-tree/nvim-web-devicons', -- optional, for file icons
-    },
-    tag = 'nightly'                  -- optional, updated every week. (see issue #1193)
+  },
+    tag = 'nightly' -- optional, updated every week. (see issue #1193)
   }
 
   use { -- Autocompletion
@@ -65,11 +65,11 @@ require('packer').startup(function(use)
   use 'tpope/vim-rhubarb'
   use 'lewis6991/gitsigns.nvim'
 
-  use 'navarasu/onedark.nvim'               -- Theme inspired by Atom
-  use 'nvim-lualine/lualine.nvim'           -- Fancier statusline
+  use 'navarasu/onedark.nvim' -- Theme inspired by Atom
+  use 'nvim-lualine/lualine.nvim' -- Fancier statusline
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
-  use 'numToStr/Comment.nvim'               -- "gc" to comment visual regions/lines
-  use 'tpope/vim-sleuth'                    -- Detect tabstop and shiftwidth automatically
+  use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
+  use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
@@ -161,10 +161,10 @@ vim.keymap.set('n', '<C-b>', '<cmd> enew <CR>', { silent = true })
 vim.keymap.set('n', '<C-x>', '<cmd>:bd <CR>', { silent = true })
 
 -- Window keymaps
-vim.keymap.set('n', '<C-h>', '<C-w>h', { silent = true })
-vim.keymap.set('n', '<C-l>', '<C-w>l', { silent = true })
-vim.keymap.set('n', '<C-j>', '<C-w>j', { silent = true })
-vim.keymap.set('n', '<C-k>', '<C-w>k', { silent = true })
+vim.keymap.set('n', '<C-h>', '<C-w>h', {silent = true })
+vim.keymap.set('n', '<C-l>', '<C-w>l', {silent = true })
+vim.keymap.set('n', '<C-j>', '<C-w>j', {silent = true })
+vim.keymap.set('n', '<C-k>', '<C-w>k', {silent = true })
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
@@ -255,7 +255,7 @@ require('telescope').setup {
   pickers = {
     find_files = {
       --Show hidden files except for .git dir
-      find_command = { 'rg', '--files', '--hidden', '-g', '!.git' },
+      find_command = {'rg', '--files', '--hidden', '-g', '!.git'},
     },
   },
 }
@@ -265,8 +265,7 @@ pcall(require('telescope').load_extension, 'fzf')
 pcall(require("telescope").load_extension "file_browser")
 
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader>/', require('telescope.builtin').current_buffer_fuzzy_find,
-  { desc = 'Find in current buffer/file' })
+vim.keymap.set('n', '<leader>/', require('telescope.builtin').current_buffer_fuzzy_find, { desc = 'Find in current buffer/file' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find buffers' })
 vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[F]ind [F]iles' })
 vim.keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, { desc = '[F]ind [H]elp' })
@@ -397,7 +396,7 @@ require('mason').setup()
 
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
-local servers = { 'clangd', 'sumneko_lua', 'marksman', 'pyright', 'bashls', 'jsonls' }
+local servers = { 'clangd', 'sumneko_lua', 'marksman', 'pyright', 'bashls', 'jsonls'}
 
 -- Ensure the servers above are installed
 require('mason-lspconfig').setup {
